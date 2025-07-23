@@ -1,7 +1,7 @@
 #!/bin/bash
 
-TOKEN="7875451479:AAF6c9eurGZjIgPJSdTslol0OZ982EHwzxc"
-USER_ID=1068755021
+TOKEN="Токен"
+USER_ID="User id"
 TIME=10
 URL="https://api.telegram.org/bot$TOKEN/sendMessage"
 
