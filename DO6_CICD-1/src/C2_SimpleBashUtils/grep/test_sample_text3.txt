@@ -1,0 +1,42 @@
+#include <stdio.h>
+#define NMAX 10
+
+int input(int *a, int *n);
+void output(int *a, int n);
+void squaring(int *a, int n);
+
+int main() {
+    int n, data[NMAX];
+    if (input(data, &n) == 1) {
+        squaring(data, n);
+        output(data, n);
+    } else { printf("n/a"); }
+    return 0;
+}
+
+// Функция ввода данных (длины массива и значений в массив)
+int input(int *a, int *n) {
+    int error_free = 1;
+    if (scanf("%d", n) == 1) {
+        if ((*n > 0) && (*n <= NMAX)) {
+            for (int *p = a; p - a < *n; p++)
+                if (scanf("%d", p) != 1) error_free = 0;
+        } else { error_free = 0; }
+    } else { error_free = 0; }
+    return error_free;
+}
+
+// Функция вывода данных из массива
+void output(int *a, int n) {
+    for (int *p = a; p - a < n; p++)
+        if (p == a + n - 1)
+            printf("%d", *p);
+        else
+            printf("%d ", *p);
+}
+
+// Функция возведения данных в массиве в квадрат
+void squaring(int *a, int n) {
+    for (int *p = a; p - a < n; p++)
+        *p = *p * *p;
+}

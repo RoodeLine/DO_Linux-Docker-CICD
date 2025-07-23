@@ -1,0 +1,65 @@
+stages:
+  - build
+  - style
+  - test
+  - deploy
+
+build:
+  stage: build
+  tags:
+    - build
+  script:
+    - cd src/C2_SimpleBashUtils/cat
+    - make
+    - cd ../grep/
+    - make
+    - cd ../../../
+  artifacts:
+    paths:
+      - src/C2_SimpleBashUtils/cat/s21_cat
+      - src/C2_SimpleBashUtils/grep/s21_grep
+    expire_in: 30 days
+  after_script:
+    - cd src/
+    - bash TgCheck.sh "CI"
+
+
+style: 
+  stage: style
+  tags:
+    - style
+  script:
+    - clang-format -n -Werror -style=google src/C2_SimpleBashUtils/*/*.c src/C2_SimpleBashUtils/*/*.h
+    - git diff --exit-code
+  dependencies:
+    - build
+  after_script:
+    - cd src/
+    - bash TgCheck.sh "CI"
+
+test:
+  stage: test
+  tags:
+    - test
+  script:
+    - cd src/C2_SimpleBashUtils/
+    - bash test.sh
+  dependencies:
+    - style
+  after_script:
+    - cd src/
+    - bash TgCheck.sh "CI"
+
+deploy:
+  stage: deploy
+  tags:
+    - deploy
+  when: manual
+  script:
+    - cd src/C2_SimpleBashUtils/
+    - bash deploy.sh
+  dependencies:
+    - test
+  after_script:
+    - cd src/
+    - bash TgCheck.sh "CD"
